@@ -32,7 +32,21 @@ router.get('/:id', (req, res) => {
 })
 
 router.post('/', (req, res) => {
+    const accountData = req.body;
 
+    db("accounts")
+        .insert(accountData, "id")
+        .then(ids => {
+            db("accounts")
+                .where({id: ids[0]})
+                .first()
+                .then( account => {
+                    res.status(200).json({data: account})
+                })
+        })
+        .catch(err => {
+            res.status(500).json({message: 'could not post account'})
+        })
 })
 
 
