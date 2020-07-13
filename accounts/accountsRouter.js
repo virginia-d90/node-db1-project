@@ -16,7 +16,19 @@ router.get('/', (req, res) => {
 })
 
 router.get('/:id', (req, res) => {
-    
+    const {id} = req.params;
+
+    db.select("*")
+        .from("accounts")
+        .where({ id })
+        .first()
+        .then(account => {
+            res.status(200).json({data: account})
+
+        })
+        .catch(err => {
+            res.status(500).json({message: 'could not get account with specified ID'})
+        })
 })
 
 router.post('/', (req, res) => {
