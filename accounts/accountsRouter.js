@@ -70,7 +70,21 @@ router.put('/:id', (req, res) => {
 })
 
 router.delete('/:id', (req, res) => {
-    
+    const {id} = req.params;
+
+    db("accounts")
+        .where({id})
+        .del()
+        .then(count => {
+            if(count > 0){
+                res.status(204).json({data: count})
+            } else {
+                res.status(404).json({message:"there was no record to delete"})
+            }
+        })
+        .catch(err => {
+            res.status(500).json({message: "record could not be deleted"})
+        })
 })
 
 
